@@ -1,8 +1,14 @@
 package lk.ijse.jsp.filter;
 
+import lk.ijse.jsp.servlet.util.ResponseUtil;
+
+import javax.json.JsonObject;
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Enumeration;
 
 @WebFilter(urlPatterns = "/*", filterName = "B")
 public class AuthFilter implements Filter {
@@ -13,30 +19,25 @@ public class AuthFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-        filterChain.doFilter(servletRequest, servletResponse);
-
-        /*HttpServletResponse res = (HttpServletResponse) servletResponse;
+        HttpServletResponse res = (HttpServletResponse) servletResponse;
         HttpServletRequest req = (HttpServletRequest) servletRequest;
         System.out.println("Auth Filter Do Filter Invoked");
 
-        //Interrupt the request and check the Auth header with every request
-        String auth = req.getHeader("Auth");
+        /*String auth = req.getHeader("Auth");
+        System.out.println(auth);*/
 
-        //so, if the Auth header is present and username & password
-        //are matching with every request then we can proceed the request
-        //to relevant servlet
-        if (auth != null && auth.equals("user=admin,pass=admin")) {
-            //forward the request to the requested servlet
+        String auth = "user=admin,pass=1234";
+
+        res.addHeader("Content-Type", "application/json");
+
+        if (auth != null && auth.equals("user=admin,pass=1234")) {
             filterChain.doFilter(servletRequest, servletResponse);
         } else {
-            //otherwise send a json object that the clint is not allowed
-            //to access the service
-            res.addHeader("Content-Type", "application/json");
+            res.addHeader("Access-Control-Allow-Origin", "*");
             res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             JsonObject jsonObject = ResponseUtil.genJson("Auth-Error", "You are not Authenticated to use this Service.!");
             res.getWriter().print(jsonObject);
-        }*/
-
+        }
     }
 
     @Override

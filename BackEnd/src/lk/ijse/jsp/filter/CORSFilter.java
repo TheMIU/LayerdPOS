@@ -17,19 +17,22 @@ public class CORSFilter implements Filter {
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletResponse res = (HttpServletResponse) servletResponse;
         HttpServletRequest req = (HttpServletRequest) servletRequest;
+        System.out.println("CORS Filter Do Filter Invoked");
 
         String method = req.getMethod();
 
         filterChain.doFilter(servletRequest, servletResponse);
 
-        if (method.equals("OPTIONS")) {
+        if (method.equals("OPTIONS")){
+            // Handle CORS preflight request
             res.setStatus(200);
+
+            res.addHeader("Access-Control-Allow-Origin", "*");
             res.addHeader("Access-Control-Allow-Methods", "PUT, DELETE");
             res.addHeader("Access-Control-Allow-Headers", "content-type,auth");
+        }else{
+            res.addHeader("Access-Control-Allow-Origin", "*");
         }
-
-        res.addHeader("Access-Control-Allow-Origin", "*");
-        res.addHeader("Content-Type", "application/json");
     }
 
     @Override
