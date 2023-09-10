@@ -14,7 +14,9 @@ function getAllItems() {
         url: baseUrl + 'item',
         dataType: "json",
         method: "GET",
-        success: function (items) {
+        success: function (response) {
+            let items = response.data;
+
             for (let i in items) {
                 let item = items[i];
                 let code = item.code;
@@ -27,7 +29,7 @@ function getAllItems() {
             setTextFields("", "", "", "");
         },
         error: function (error) {
-            alert(error.responseJSON.message);
+            alert(JSON.parse(error.responseText).message);
             setTextFields("", "", "", "");
         }
     });
@@ -79,18 +81,22 @@ $("#btnItem").click(function () {
 $("#btnItemDelete").click(function () {
     let code = $('#itemCode').val();
 
-    $.ajax({
-        url: baseUrl + "item?code=" + code,
-        method: "DELETE",
+    let b = confirm("Do you want to Delete " + code + " ?");
 
-        success: function (res) {
-            alert(res.message);
-            getAllItems();
-        },
-        error: function (error) {
-            alert(error.responseJSON.message);
-        }
-    });
+    if (b) {
+        $.ajax({
+            url: baseUrl + "item?code=" + code,
+            method: "DELETE",
+
+            success: function (res) {
+                alert(res.message);
+                getAllItems();
+            },
+            error: function (error) {
+                alert(error.responseJSON.message);
+            }
+        });
+    }
 });
 
 // update
@@ -107,18 +113,22 @@ $("#btnItemUpdate").click(function () {
         "unitPrice": unitPrice
     }
 
-    $.ajax({
-        url: baseUrl + "item",
-        method: "PUT",
-        contentType: "application/json",
-        data: JSON.stringify(item),
+    let b = confirm("Do you want to Update " + code + " ?");
 
-        success: function (res) {
-            alert(res.message);
-            getAllItems();
-        },
-        error: function (error) {
-            alert(error.responseJSON.message);
-        }
-    });
+    if (b) {
+        $.ajax({
+            url: baseUrl + "item",
+            method: "PUT",
+            contentType: "application/json",
+            data: JSON.stringify(item),
+
+            success: function (res) {
+                alert(res.message);
+                getAllItems();
+            },
+            error: function (error) {
+                alert(error.responseJSON.message);
+            }
+        });
+    }
 });

@@ -1,5 +1,7 @@
 package lk.ijse.jsp.servlet;
 
+import lk.ijse.jsp.servlet.util.ResponseUtil;
+
 import javax.json.*;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -35,14 +37,15 @@ public class ItemServletAPI extends HttpServlet {
                 allItems.add(itemObject.build());
             }
 
-            resp.getWriter().print(allItems.build());
+            resp.getWriter().print(ResponseUtil.genJson("Success", "Loaded", allItems.build()));
+
 
         } catch (ClassNotFoundException e) {
-            showMessage(resp, e.getMessage(), "error", "[]");
+            resp.getWriter().print(ResponseUtil.genJson("Error", e.getMessage()));
             resp.setStatus(500);
 
         } catch (SQLException e) {
-            showMessage(resp, e.getMessage(), "error", "[]");
+            resp.getWriter().print(ResponseUtil.genJson("Error", e.getMessage()));
             resp.setStatus(400);
         }
     }
@@ -65,19 +68,19 @@ public class ItemServletAPI extends HttpServlet {
             pstm.setObject(4, unitPrice);
 
             if (pstm.executeUpdate() > 0) {
-                showMessage(resp, code + " Successfully Added..!", "ok", "[]");
+                resp.getWriter().print(ResponseUtil.genJson("Success", code + " Successfully Added."));
                 resp.setStatus(200);
             } else {
-                showMessage(resp, "Wrong data", "error", "[]");
+                resp.getWriter().print(ResponseUtil.genJson("Error", "Wrong data !"));
                 resp.setStatus(400);
             }
 
         } catch (ClassNotFoundException e) {
-            showMessage(resp, e.getMessage(), "error", "[]");
+            resp.getWriter().print(ResponseUtil.genJson("Error", e.getMessage()));
             resp.setStatus(500);
 
         } catch (SQLException e) {
-            showMessage(resp, e.getMessage(), "error", "[]");
+            resp.getWriter().print(ResponseUtil.genJson("Error", e.getMessage()));
             resp.setStatus(400);
         }
     }
@@ -103,19 +106,19 @@ public class ItemServletAPI extends HttpServlet {
             pstm3.setObject(4, code);
 
             if (pstm3.executeUpdate() > 0) {
-                showMessage(resp, code + " Item Updated..!", "ok", "[]");
+                resp.getWriter().print(ResponseUtil.genJson("Success", code + " Item Updated..!"));
                 resp.setStatus(200);
             } else {
-                showMessage(resp, code + " Item is not exist..!", "error", "[]");
+                resp.getWriter().print(ResponseUtil.genJson("Failed", code + " Item is not exist..!"));
                 resp.setStatus(400);
             }
 
         } catch (ClassNotFoundException e) {
-            showMessage(resp, e.getMessage(), "error", "[]");
+            resp.getWriter().print(ResponseUtil.genJson("Error", e.getMessage()));
             resp.setStatus(500);
 
         } catch (SQLException e) {
-            showMessage(resp, e.getMessage(), "error", "[]");
+            resp.getWriter().print(ResponseUtil.genJson("Error", e.getMessage()));
             resp.setStatus(400);
         }
     }
@@ -130,30 +133,21 @@ public class ItemServletAPI extends HttpServlet {
 
             PreparedStatement pstm = connection.prepareStatement("delete from Item where code=?");
             pstm.setObject(1, code);
-            resp.addHeader("Content-Type", "application/json");
 
             if (pstm.executeUpdate() > 0) {
-                showMessage(resp, code + " Item Deleted..!", "ok", "[]");
+                resp.getWriter().print(ResponseUtil.genJson("Success", code + " Item Deleted..!"));
                 resp.setStatus(200);
             } else {
-                showMessage(resp, "Item with code " + code + " not found.", "error", "[]");
+                resp.getWriter().print(ResponseUtil.genJson("Failed", "Item with code " + code + " not found."));
                 resp.setStatus(400);
             }
         } catch (ClassNotFoundException e) {
-            showMessage(resp, e.getMessage(), "error", "[]");
+            resp.getWriter().print(ResponseUtil.genJson("Error", e.getMessage()));
             resp.setStatus(500);
 
         } catch (SQLException e) {
-            showMessage(resp, e.getMessage(), "error", "[]");
+            resp.getWriter().print(ResponseUtil.genJson("Error", e.getMessage()));
             resp.setStatus(400);
         }
-    }
-
-    private void showMessage(HttpServletResponse resp, String message, String state, String data) throws IOException {
-        JsonObjectBuilder response = Json.createObjectBuilder();
-        response.add("state", state);
-        response.add("message", message);
-        response.add("data", data);
-        resp.getWriter().print(response.build());
     }
 }

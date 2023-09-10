@@ -28,7 +28,7 @@ function getAllCustomers() {
             setTextFields("", "", "");
         },
         error: function (error) {
-            alert(JSON.parse(error.responseText).message);
+            alert(error.responseJSON.message);
             setTextFields("", "", "");
         }
     });
@@ -65,11 +65,11 @@ $("#btnCustomer").click(function () {
         method: "POST",
         data: formData,
         success: function (res) {
-            alert(JSON.parse(res).message);
+            alert(res.message);
             getAllCustomers();
         },
         error: function (error) {
-            alert(JSON.parse(error.responseText).message);
+            alert(error.responseJSON.message);
         }
     });
 });
@@ -85,11 +85,11 @@ $("#btnCusDelete").click(function () {
             method: 'DELETE',
 
             success: function (res) {
-                alert(JSON.parse(res).message);
+                alert(res.message);
                 getAllCustomers();
             },
             error: function (error) {
-                alert(JSON.parse(error.responseText).message);
+                alert(error.responseJSON.message);
             }
         });
     }
@@ -117,11 +117,11 @@ $("#btnUpdate").click(function () {
             data: JSON.stringify(customer),
 
             success: function (res) {
-                alert(JSON.parse(res).message);
+                alert(res.message);
                 getAllCustomers();
             },
             error: function (error) {
-                alert(JSON.parse(error.responseText).message);
+                alert(error.responseJSON.message);
             }
         });
     }

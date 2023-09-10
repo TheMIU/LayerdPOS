@@ -9,7 +9,9 @@ function getAllOrders() {
         url: baseUrl + 'orders',
         dataType: 'json',
         method: 'GET',
-        success: function (orders) {
+        success: function (response) {
+            let orders = response.data;
+
             for (let i in orders) {
                 let order = orders[i];
                 let orderId = order.orderID;

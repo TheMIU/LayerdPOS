@@ -13,10 +13,9 @@ function getCustomerDB() {
         dataType: "json",
         method: "GET",
         async: false,
-        success: function (customers) {
-            customerDB = customers;
+        success: function (resp) {
+            customerDB = resp.data;
             console.log(customerDB)
-
         },
         error: function (error) {
             alert('Error loading customers');
@@ -30,8 +29,8 @@ function getItemDB() {
         dataType: "json",
         method: "GET",
         async: false,
-        success: function (items) {
-            itemDB = items;
+        success: function (resp) {
+            itemDB = resp.data;
             console.log(itemDB)
         },
         error: function (error) {
@@ -46,8 +45,8 @@ function getOrderDB() {
         dataType: "json",
         method: "GET",
         async: false,
-        success: function (orders) {
-            orderDB = orders;
+        success: function (resp) {
+            orderDB = resp.data;
             console.log(orderDB)
         },
         error: function (error) {
@@ -414,7 +413,7 @@ function placeOrder() {
             alert(res.message);
         },
         error: function (error) {
-            alert(error.responseJSON.message);
+            alert(error.statusText);
         }
     });
 

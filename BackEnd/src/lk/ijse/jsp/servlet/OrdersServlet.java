@@ -1,5 +1,7 @@
 package lk.ijse.jsp.servlet;
 
+import lk.ijse.jsp.servlet.util.ResponseUtil;
+
 import javax.json.Json;
 import javax.json.JsonArrayBuilder;
 import javax.json.JsonObjectBuilder;
@@ -49,24 +51,15 @@ public class OrdersServlet extends HttpServlet {
                 orderObject.add("total", total);
                 allOrders.add(orderObject.build());
             }
-
-            resp.getWriter().print(allOrders.build());
+            resp.getWriter().print(ResponseUtil.genJson("Success", "Loaded", allOrders.build()));
 
         } catch (ClassNotFoundException e) {
-            showMessage(resp, e.getMessage(), "error", "[]");
+            resp.getWriter().print(ResponseUtil.genJson("Error", e.getMessage()));
             resp.setStatus(500);
 
         } catch (SQLException e) {
-            showMessage(resp, e.getMessage(), "error", "[]");
+            resp.getWriter().print(ResponseUtil.genJson("Error", e.getMessage()));
             resp.setStatus(400);
         }
-    }
-
-    private void showMessage(HttpServletResponse resp, String message, String state, String data) throws IOException {
-        JsonObjectBuilder response = Json.createObjectBuilder();
-        response.add("state", state);
-        response.add("message", message);
-        response.add("data", data);
-        resp.getWriter().print(response.build());
     }
 }

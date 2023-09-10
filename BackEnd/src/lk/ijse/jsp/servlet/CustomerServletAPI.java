@@ -142,14 +142,6 @@ public class CustomerServletAPI extends HttpServlet {
             resp.setStatus(400);
         }
     }
-
-/*    private void showMessage(HttpServletResponse resp, String message, String state, String data) throws IOException {
-        JsonObjectBuilder response = Json.createObjectBuilder();
-        response.add("state", state);
-        response.add("message", message);
-        response.add("data", data);
-        resp.getWriter().print(response.build());
-    }*/
 }
 
 

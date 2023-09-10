@@ -1,5 +1,7 @@
 package lk.ijse.jsp.servlet;
 
+import lk.ijse.jsp.servlet.util.ResponseUtil;
+
 import javax.json.*;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -76,11 +78,11 @@ public class PurchaseOrderServletAPI extends HttpServlet {
 
                 if (success) {
                     connection.commit();
-                    showMessage(resp, orderID + " Order Successfully Added..!", "ok", "[]");
+                    resp.getWriter().print(ResponseUtil.genJson("Success", orderID + " Order Successfully Added..!"));
                     resp.setStatus(200);
                 } else {
                     connection.rollback();
-                    showMessage(resp, "Data insertion failed", "error", "[]");
+                    resp.getWriter().print(ResponseUtil.genJson("Error",  "Data insertion failed"));
                     resp.setStatus(500);
                 }
 
@@ -89,20 +91,12 @@ public class PurchaseOrderServletAPI extends HttpServlet {
             } catch (SQLException e) {
                 e.printStackTrace();
                 resp.setStatus(500);
-                showMessage(resp, "Database error", "error", "[]");
+                resp.getWriter().print(ResponseUtil.genJson("Error", e.getMessage()));
             }
         } catch (JsonException e) {
             e.printStackTrace();
             resp.setStatus(400);
-            showMessage(resp, "Invalid JSON data", "error", "[]");
+            resp.getWriter().print(ResponseUtil.genJson("Error", e.getMessage()));
         }
-    }
-
-    private void showMessage(HttpServletResponse resp, String message, String state, String data) throws IOException {
-        JsonObjectBuilder response = Json.createObjectBuilder();
-        response.add("state", state);
-        response.add("message", message);
-        response.add("data", data);
-        resp.getWriter().print(response.build());
     }
 }
