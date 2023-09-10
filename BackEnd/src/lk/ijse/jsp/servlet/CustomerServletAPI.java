@@ -1,6 +1,7 @@
 package lk.ijse.jsp.servlet;
 
 import lk.ijse.jsp.servlet.util.ResponseUtil;
+import org.apache.commons.dbcp2.BasicDataSource;
 
 import javax.json.*;
 import javax.servlet.annotation.WebServlet;
@@ -14,10 +15,7 @@ import java.sql.*;
 public class CustomerServletAPI extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost/testdb?useSSL=false", "root", "1234");
-
+        try (Connection connection = ((BasicDataSource) getServletContext().getAttribute("dbcp")).getConnection();) {
             PreparedStatement pstm = connection.prepareStatement("select * from customer");
             ResultSet rst = pstm.executeQuery();
 
@@ -36,10 +34,6 @@ public class CustomerServletAPI extends HttpServlet {
 
             resp.getWriter().print(ResponseUtil.genJson("Success", "Loaded", allCustomers.build()));
 
-        } catch (ClassNotFoundException e) {
-            resp.getWriter().print(ResponseUtil.genJson("Error", e.getMessage()));
-            resp.setStatus(500);
-
         } catch (SQLException e) {
             resp.getWriter().print(ResponseUtil.genJson("Error", e.getMessage()));
             resp.setStatus(400);
@@ -52,9 +46,7 @@ public class CustomerServletAPI extends HttpServlet {
         String cusName = req.getParameter("cusName");
         String cusAddress = req.getParameter("cusAddress");
 
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost/testdb?useSSL=false", "root", "1234");
+        try (Connection connection = ((BasicDataSource) getServletContext().getAttribute("dbcp")).getConnection();) {
             PreparedStatement pstm = connection.prepareStatement("insert into customer values(?,?,?)");
 
             pstm.setObject(1, cusID);
@@ -62,16 +54,12 @@ public class CustomerServletAPI extends HttpServlet {
             pstm.setObject(3, cusAddress);
 
             if (pstm.executeUpdate() > 0) {
-                resp.getWriter().print(ResponseUtil.genJson("Success", cusID+" Successfully Added."));
+                resp.getWriter().print(ResponseUtil.genJson("Success", cusID + " Successfully Added."));
                 resp.setStatus(200);
             } else {
                 resp.getWriter().print(ResponseUtil.genJson("Error", "Wrong data !"));
                 resp.setStatus(400);
             }
-
-        } catch (ClassNotFoundException e) {
-            resp.getWriter().print(ResponseUtil.genJson("Error", e.getMessage()));
-            resp.setStatus(500);
 
         } catch (SQLException e) {
             resp.getWriter().print(ResponseUtil.genJson("Error", e.getMessage()));
@@ -88,10 +76,8 @@ public class CustomerServletAPI extends HttpServlet {
         String cusName = jsonObject.getString("cusName");
         String cusAddress = jsonObject.getString("cusAddress");
 
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost/testdb?useSSL=false", "root", "1234");
-            PreparedStatement pstm3 = connection.prepareStatement("update customer set cusName=?,cusAddress=? where cusID=?");
+        try (Connection connection = ((BasicDataSource) getServletContext().getAttribute("dbcp")).getConnection();) {
+          PreparedStatement pstm3 = connection.prepareStatement("update customer set cusName=?,cusAddress=? where cusID=?");
 
             pstm3.setObject(3, cusID);
             pstm3.setObject(1, cusName);
@@ -105,10 +91,6 @@ public class CustomerServletAPI extends HttpServlet {
                 resp.setStatus(400);
             }
 
-        } catch (ClassNotFoundException e) {
-            resp.getWriter().print(ResponseUtil.genJson("Error", e.getMessage()));
-            resp.setStatus(500);
-
         } catch (SQLException e) {
             resp.getWriter().print(ResponseUtil.genJson("Error", e.getMessage()));
             resp.setStatus(400);
@@ -119,9 +101,7 @@ public class CustomerServletAPI extends HttpServlet {
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String cusID = req.getParameter("cusID");
 
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost/testdb?useSSL=false", "root", "1234");
+        try (Connection connection = ((BasicDataSource) getServletContext().getAttribute("dbcp")).getConnection();) {
             PreparedStatement pstm = connection.prepareStatement("delete from customer where cusID=?");
             pstm.setObject(1, cusID);
 
@@ -132,10 +112,6 @@ public class CustomerServletAPI extends HttpServlet {
                 resp.getWriter().print(ResponseUtil.genJson("Failed", "Customer with ID " + cusID + " not found."));
                 resp.setStatus(400);
             }
-
-        } catch (ClassNotFoundException e) {
-            resp.getWriter().print(ResponseUtil.genJson("Error", e.getMessage()));
-            resp.setStatus(500);
 
         } catch (SQLException e) {
             resp.getWriter().print(ResponseUtil.genJson("Error", e.getMessage()));

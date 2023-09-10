@@ -1,6 +1,7 @@
 package lk.ijse.jsp.servlet;
 
 import lk.ijse.jsp.servlet.util.ResponseUtil;
+import org.apache.commons.dbcp2.BasicDataSource;
 
 import javax.json.*;
 import javax.servlet.annotation.WebServlet;
@@ -30,8 +31,8 @@ public class PurchaseOrderServletAPI extends HttpServlet {
 
             String customerID = customer.getString("id");
 
-            try {
-                Connection connection = DriverManager.getConnection("jdbc:mysql://localhost/testdb?useSSL=false", "root", "1234");
+            try (Connection connection = ((BasicDataSource) getServletContext().getAttribute("dbcp")).getConnection();) {
+
                 connection.setAutoCommit(false);
 
                 boolean success = true;
@@ -82,7 +83,7 @@ public class PurchaseOrderServletAPI extends HttpServlet {
                     resp.setStatus(200);
                 } else {
                     connection.rollback();
-                    resp.getWriter().print(ResponseUtil.genJson("Error",  "Data insertion failed"));
+                    resp.getWriter().print(ResponseUtil.genJson("Error", "Data insertion failed"));
                     resp.setStatus(500);
                 }
 

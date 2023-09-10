@@ -1,6 +1,7 @@
 package lk.ijse.jsp.servlet;
 
 import lk.ijse.jsp.servlet.util.ResponseUtil;
+import org.apache.commons.dbcp2.BasicDataSource;
 
 import javax.json.*;
 import javax.servlet.annotation.WebServlet;
@@ -15,10 +16,7 @@ public class ItemServletAPI extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost/testdb?useSSL=false", "root", "1234");
-
+        try (Connection connection = ((BasicDataSource) getServletContext().getAttribute("dbcp")).getConnection();) {
             PreparedStatement pstm = connection.prepareStatement("select * from Item");
             ResultSet rst = pstm.executeQuery();
 
@@ -40,10 +38,6 @@ public class ItemServletAPI extends HttpServlet {
             resp.getWriter().print(ResponseUtil.genJson("Success", "Loaded", allItems.build()));
 
 
-        } catch (ClassNotFoundException e) {
-            resp.getWriter().print(ResponseUtil.genJson("Error", e.getMessage()));
-            resp.setStatus(500);
-
         } catch (SQLException e) {
             resp.getWriter().print(ResponseUtil.genJson("Error", e.getMessage()));
             resp.setStatus(400);
@@ -57,9 +51,7 @@ public class ItemServletAPI extends HttpServlet {
         String qty = req.getParameter("qty");
         String unitPrice = req.getParameter("unitPrice");
 
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost/testdb?useSSL=false", "root", "1234");
+        try (Connection connection = ((BasicDataSource) getServletContext().getAttribute("dbcp")).getConnection();) {
 
             PreparedStatement pstm = connection.prepareStatement("insert into Item values(?,?,?,?)");
             pstm.setObject(1, code);
@@ -74,10 +66,6 @@ public class ItemServletAPI extends HttpServlet {
                 resp.getWriter().print(ResponseUtil.genJson("Error", "Wrong data !"));
                 resp.setStatus(400);
             }
-
-        } catch (ClassNotFoundException e) {
-            resp.getWriter().print(ResponseUtil.genJson("Error", e.getMessage()));
-            resp.setStatus(500);
 
         } catch (SQLException e) {
             resp.getWriter().print(ResponseUtil.genJson("Error", e.getMessage()));
@@ -95,9 +83,7 @@ public class ItemServletAPI extends HttpServlet {
         String qty = jsonObject.getString("qty");
         String unitPrice = jsonObject.getString("unitPrice");
 
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost/testdb?useSSL=false", "root", "1234");
+        try (Connection connection = ((BasicDataSource) getServletContext().getAttribute("dbcp")).getConnection();) {
 
             PreparedStatement pstm3 = connection.prepareStatement("update Item set itemName=?,qty=?,unitPrice=? where code=?");
             pstm3.setObject(1, itemName);
@@ -113,10 +99,6 @@ public class ItemServletAPI extends HttpServlet {
                 resp.setStatus(400);
             }
 
-        } catch (ClassNotFoundException e) {
-            resp.getWriter().print(ResponseUtil.genJson("Error", e.getMessage()));
-            resp.setStatus(500);
-
         } catch (SQLException e) {
             resp.getWriter().print(ResponseUtil.genJson("Error", e.getMessage()));
             resp.setStatus(400);
@@ -127,9 +109,7 @@ public class ItemServletAPI extends HttpServlet {
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String code = req.getParameter("code");
 
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost/testdb?useSSL=false", "root", "1234");
+        try (Connection connection = ((BasicDataSource) getServletContext().getAttribute("dbcp")).getConnection();) {
 
             PreparedStatement pstm = connection.prepareStatement("delete from Item where code=?");
             pstm.setObject(1, code);
@@ -141,10 +121,6 @@ public class ItemServletAPI extends HttpServlet {
                 resp.getWriter().print(ResponseUtil.genJson("Failed", "Item with code " + code + " not found."));
                 resp.setStatus(400);
             }
-        } catch (ClassNotFoundException e) {
-            resp.getWriter().print(ResponseUtil.genJson("Error", e.getMessage()));
-            resp.setStatus(500);
-
         } catch (SQLException e) {
             resp.getWriter().print(ResponseUtil.genJson("Error", e.getMessage()));
             resp.setStatus(400);

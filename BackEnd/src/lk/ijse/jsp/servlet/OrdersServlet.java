@@ -1,6 +1,7 @@
 package lk.ijse.jsp.servlet;
 
 import lk.ijse.jsp.servlet.util.ResponseUtil;
+import org.apache.commons.dbcp2.BasicDataSource;
 
 import javax.json.Json;
 import javax.json.JsonArrayBuilder;
@@ -17,9 +18,7 @@ import java.sql.*;
 public class OrdersServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost/testdb?useSSL=false", "root", "1234");
+        try (Connection connection = ((BasicDataSource) getServletContext().getAttribute("dbcp")).getConnection();) {
 
             PreparedStatement pstm = connection.prepareStatement("SELECT\n" +
                     "    o.orderID,\n" +
@@ -52,10 +51,6 @@ public class OrdersServlet extends HttpServlet {
                 allOrders.add(orderObject.build());
             }
             resp.getWriter().print(ResponseUtil.genJson("Success", "Loaded", allOrders.build()));
-
-        } catch (ClassNotFoundException e) {
-            resp.getWriter().print(ResponseUtil.genJson("Error", e.getMessage()));
-            resp.setStatus(500);
 
         } catch (SQLException e) {
             resp.getWriter().print(ResponseUtil.genJson("Error", e.getMessage()));
