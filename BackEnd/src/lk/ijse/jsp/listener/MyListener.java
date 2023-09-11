@@ -1,4 +1,4 @@
-package lk.ijse.jsp.Listener;
+package lk.ijse.jsp.listener;
 
 import org.apache.commons.dbcp2.BasicDataSource;
 
