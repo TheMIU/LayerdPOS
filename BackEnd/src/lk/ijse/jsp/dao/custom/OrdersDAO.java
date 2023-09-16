@@ -1,7 +1,7 @@
 package lk.ijse.jsp.dao.custom;
 
 import lk.ijse.jsp.dao.CrudDAO;
-import lk.ijse.jsp.entity.OrderDetails;
+import lk.ijse.jsp.entity.CustomEntity;
 
-public interface OrdersDAO extends CrudDAO<OrderDetails,String> {
+public interface OrdersDAO extends CrudDAO<CustomEntity,String> {
 }
