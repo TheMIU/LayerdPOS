@@ -30,12 +30,12 @@ public class CustomerBOImpl implements CustomerBO {
     }
 
     @Override
-    public boolean customerExist(String id) throws SQLException, ClassNotFoundException {
-        return false;
+    public boolean deleteCustomer(String id) throws SQLException, ClassNotFoundException {
+        return customerDAO.delete(id);
     }
 
     @Override
-    public boolean deleteCustomer(String id) throws SQLException, ClassNotFoundException {
+    public boolean customerExist(String id) throws SQLException, ClassNotFoundException {
         return false;
     }
 

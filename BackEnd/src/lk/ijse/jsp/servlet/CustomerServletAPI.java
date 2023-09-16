@@ -56,7 +56,7 @@ public class CustomerServletAPI extends HttpServlet {
 
         boolean isSaved = customerBO.saveCustomer(new CustomerDTO(cusID, cusName, cusAddress));
 
-        if(isSaved){
+        if (isSaved) {
             resp.getWriter().print(ResponseUtil.genJson("Success", cusID + " Successfully Added."));
             resp.setStatus(200);
         } else {
@@ -77,39 +77,31 @@ public class CustomerServletAPI extends HttpServlet {
 
         boolean isUpdated = customerBO.updateCustomer(new CustomerDTO(cusID, cusName, cusAddress));
 
-        if(isUpdated){
+        if (isUpdated) {
             resp.getWriter().print(ResponseUtil.genJson("Success", cusID + " Customer Updated..!"));
             resp.setStatus(200);
-        }else {
+        } else {
             resp.getWriter().print(ResponseUtil.genJson("Failed", cusID + " Customer is not exist..!"));
             resp.setStatus(400);
         }
-        /*
-        try (Connection connection = ((BasicDataSource) getServletContext().getAttribute("dbcp")).getConnection();) {
-          PreparedStatement pstm3 = connection.prepareStatement("update customer set cusName=?,cusAddress=? where cusID=?");
-
-            pstm3.setObject(3, cusID);
-            pstm3.setObject(1, cusName);
-            pstm3.setObject(2, cusAddress);
-
-            if (pstm3.executeUpdate() > 0) {
-                resp.getWriter().print(ResponseUtil.genJson("Success", cusID + " Customer Updated..!"));
-                resp.setStatus(200);
-            } else {
-                resp.getWriter().print(ResponseUtil.genJson("Failed", cusID + " Customer is not exist..!"));
-                resp.setStatus(400);
-            }
-
-        } catch (SQLException e) {
-            resp.getWriter().print(ResponseUtil.genJson("Error", e.getMessage()));
-            resp.setStatus(400);
-        }*/
     }
 
+    @SneakyThrows
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String cusID = req.getParameter("cusID");
 
+        boolean isDeleted = customerBO.deleteCustomer(cusID);
+
+        if (isDeleted) {
+            resp.getWriter().print(ResponseUtil.genJson("Success", cusID + " Customer Deleted..!"));
+            resp.setStatus(200);
+        } else {
+            resp.getWriter().print(ResponseUtil.genJson("Failed", "Customer with ID " + cusID + " not found."));
+            resp.setStatus(400);
+        }
+
+        /*
         try (Connection connection = ((BasicDataSource) getServletContext().getAttribute("dbcp")).getConnection();) {
             PreparedStatement pstm = connection.prepareStatement("delete from customer where cusID=?");
             pstm.setObject(1, cusID);
@@ -125,7 +117,7 @@ public class CustomerServletAPI extends HttpServlet {
         } catch (SQLException e) {
             resp.getWriter().print(ResponseUtil.genJson("Error", e.getMessage()));
             resp.setStatus(400);
-        }
+        }*/
     }
 }
 

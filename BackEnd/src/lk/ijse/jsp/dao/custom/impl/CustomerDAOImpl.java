@@ -59,17 +59,31 @@ public class CustomerDAOImpl implements CustomerDAO {
     }
 
     @Override
+    public boolean delete(String cusID) {
+        try (Connection connection = MyListener.pool.getConnection();) {
+            PreparedStatement pstm = connection.prepareStatement("delete from customer where cusID=?");
+            pstm.setObject(1, cusID);
+
+            if (pstm.executeUpdate() > 0) {
+                System.out.println("Deleted");
+                return true;
+            } else {
+                System.out.println("failed");
+                return false;
+            }
+        } catch (SQLException e) {
+            System.out.println("Connection failed");
+            return false;
+        }
+    }
+
+    @Override
     public Customer search(String s) throws SQLException, ClassNotFoundException {
         return null;
     }
 
     @Override
     public boolean exist(String s) throws SQLException, ClassNotFoundException {
-        return false;
-    }
-
-    @Override
-    public boolean delete(String s) throws SQLException, ClassNotFoundException {
         return false;
     }
 
