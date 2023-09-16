@@ -11,22 +11,6 @@ import java.sql.SQLException;
 
 @WebListener
 public class MyListener implements ServletContextListener {
-   /* @Override
-    public void contextInitialized(ServletContextEvent servletContextEvent) {
-        // create pool
-        BasicDataSource pool = new BasicDataSource();
-        pool.setDriverClassName("com.mysql.jdbc.Driver");
-        pool.setUrl("jdbc:mysql://localhost:3306/testdb");
-        pool.setUsername("root");
-        pool.setPassword("1234");
-        pool.setInitialSize(3);
-        pool.setMaxTotal(3);
-
-        // bind pool to servlet context
-        ServletContext servletContext = servletContextEvent.getServletContext();
-        servletContext.setAttribute("dbcp",pool);
-    }*/
-
     public static BasicDataSource pool;
 
     @Override

@@ -1,3 +1,4 @@
+/*
 package lk.ijse.jsp.dao;
 
 import lk.ijse.jsp.listener.MyListener;
@@ -26,3 +27,4 @@ public class SQLUtil {
         return getPreparedStatement(sql, args).executeQuery();
     }
 }
+*/

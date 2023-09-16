@@ -56,7 +56,6 @@ public class CustomerServletAPI extends HttpServlet {
 
         boolean isSaved = customerBO.saveCustomer(new CustomerDTO(cusID, cusName, cusAddress));
 
-
         if(isSaved){
             resp.getWriter().print(ResponseUtil.genJson("Success", cusID + " Successfully Added."));
             resp.setStatus(200);
@@ -64,28 +63,9 @@ public class CustomerServletAPI extends HttpServlet {
             resp.getWriter().print(ResponseUtil.genJson("Error", "Wrong data !"));
             resp.setStatus(400);
         }
-
-        /*try (Connection connection = ((BasicDataSource) getServletContext().getAttribute("dbcp")).getConnection();) {
-            PreparedStatement pstm = connection.prepareStatement("insert into customer values(?,?,?)");
-
-            pstm.setObject(1, cusID);
-            pstm.setObject(2, cusName);
-            pstm.setObject(3, cusAddress);
-
-            if (pstm.executeUpdate() > 0) {
-                resp.getWriter().print(ResponseUtil.genJson("Success", cusID + " Successfully Added."));
-                resp.setStatus(200);
-            } else {
-                resp.getWriter().print(ResponseUtil.genJson("Error", "Wrong data !"));
-                resp.setStatus(400);
-            }
-
-        } catch (SQLException e) {
-            resp.getWriter().print(ResponseUtil.genJson("Error", e.getMessage()));
-            resp.setStatus(400);
-        }*/
     }
 
+    @SneakyThrows
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         JsonReader reader = Json.createReader(req.getReader());
@@ -95,6 +75,16 @@ public class CustomerServletAPI extends HttpServlet {
         String cusName = jsonObject.getString("cusName");
         String cusAddress = jsonObject.getString("cusAddress");
 
+        boolean isUpdated = customerBO.updateCustomer(new CustomerDTO(cusID, cusName, cusAddress));
+
+        if(isUpdated){
+            resp.getWriter().print(ResponseUtil.genJson("Success", cusID + " Customer Updated..!"));
+            resp.setStatus(200);
+        }else {
+            resp.getWriter().print(ResponseUtil.genJson("Failed", cusID + " Customer is not exist..!"));
+            resp.setStatus(400);
+        }
+        /*
         try (Connection connection = ((BasicDataSource) getServletContext().getAttribute("dbcp")).getConnection();) {
           PreparedStatement pstm3 = connection.prepareStatement("update customer set cusName=?,cusAddress=? where cusID=?");
 
@@ -113,7 +103,7 @@ public class CustomerServletAPI extends HttpServlet {
         } catch (SQLException e) {
             resp.getWriter().print(ResponseUtil.genJson("Error", e.getMessage()));
             resp.setStatus(400);
-        }
+        }*/
     }
 
     @Override

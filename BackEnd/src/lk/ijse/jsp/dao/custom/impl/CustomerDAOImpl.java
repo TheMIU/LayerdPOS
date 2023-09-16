@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 public class CustomerDAOImpl implements CustomerDAO {
     @Override
-    public ArrayList<Customer> getAll() throws SQLException, ClassNotFoundException {
+    public ArrayList<Customer> getAll() {
         return null;
     }
 
@@ -37,8 +37,25 @@ public class CustomerDAOImpl implements CustomerDAO {
     }
 
     @Override
-    public boolean update(Customer dto) throws SQLException, ClassNotFoundException {
-        return false;
+    public boolean update(Customer dto) {
+        try (Connection connection = MyListener.pool.getConnection();) {
+            PreparedStatement pstm = connection.prepareStatement("update customer set cusName=?,cusAddress=? where cusID=?");
+
+            pstm.setObject(3, dto.getId());
+            pstm.setObject(1, dto.getName());
+            pstm.setObject(2, dto.getAddress());
+
+            if (pstm.executeUpdate() > 0) {
+                System.out.println("Updated");
+                return true;
+            } else {
+                System.out.println("failed");
+                return false;
+            }
+        } catch (SQLException e) {
+            System.out.println("Connection failed");
+            return false;
+        }
     }
 
     @Override
