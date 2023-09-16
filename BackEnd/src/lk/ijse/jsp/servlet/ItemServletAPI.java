@@ -1,6 +1,10 @@
 package lk.ijse.jsp.servlet;
 
+import lk.ijse.jsp.bo.BOFactory;
+import lk.ijse.jsp.bo.custom.ItemBO;
+import lk.ijse.jsp.dto.ItemDTO;
 import lk.ijse.jsp.servlet.util.ResponseUtil;
+import lombok.SneakyThrows;
 import org.apache.commons.dbcp2.BasicDataSource;
 
 import javax.json.*;
@@ -10,12 +14,31 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.*;
+import java.util.ArrayList;
 
 @WebServlet(urlPatterns = "/pages/item")
 public class ItemServletAPI extends HttpServlet {
+    ItemBO itemBO = (ItemBO) BOFactory.getBOFactory().getBO(BOFactory.BOTypes.ITEM);
 
+    @SneakyThrows
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        ArrayList<ItemDTO> allItemDTOs = itemBO.getAllItems();
+
+        JsonArrayBuilder allItems = Json.createArrayBuilder();
+
+        for (ItemDTO i : allItemDTOs) {
+            JsonObjectBuilder itemObject = Json.createObjectBuilder();
+            itemObject.add("code", i.getCode());
+            itemObject.add("itemName", i.getDescription());
+            itemObject.add("qty", i.getQtyOnHand());
+            itemObject.add("unitPrice", i.getUnitPrice());
+            allItems.add(itemObject.build());
+        }
+
+        resp.getWriter().print(ResponseUtil.genJson("Success", "Loaded", allItems.build()));
+
+/*
         try (Connection connection = ((BasicDataSource) getServletContext().getAttribute("dbcp")).getConnection();) {
             PreparedStatement pstm = connection.prepareStatement("select * from Item");
             ResultSet rst = pstm.executeQuery();
@@ -41,7 +64,7 @@ public class ItemServletAPI extends HttpServlet {
         } catch (SQLException e) {
             resp.getWriter().print(ResponseUtil.genJson("Error", e.getMessage()));
             resp.setStatus(400);
-        }
+        }*/
     }
 
     @Override

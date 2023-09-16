@@ -28,42 +28,14 @@ public class CustomerServletAPI extends HttpServlet {
         JsonArrayBuilder allCustomers = Json.createArrayBuilder();
 
         for (CustomerDTO c : customerArray) {
-            String id = c.getId();
-            String name = c.getName();
-            String address = c.getAddress();
-
             JsonObjectBuilder customerObject = Json.createObjectBuilder();
-            customerObject.add("id", id);
-            customerObject.add("name", name);
-            customerObject.add("address", address);
+            customerObject.add("id", c.getId());
+            customerObject.add("name", c.getName());
+            customerObject.add("address", c.getAddress());
             allCustomers.add(customerObject.build());
         }
 
         resp.getWriter().print(ResponseUtil.genJson("Success", "Loaded", allCustomers.build()));
-/*
-        try (Connection connection = ((BasicDataSource) getServletContext().getAttribute("dbcp")).getConnection();) {
-            PreparedStatement pstm = connection.prepareStatement("select * from customer");
-            ResultSet rst = pstm.executeQuery();
-
-            JsonArrayBuilder allCustomers = Json.createArrayBuilder();
-            while (rst.next()) {
-                String id = rst.getString(1);
-                String name = rst.getString(2);
-                String address = rst.getString(3);
-
-                JsonObjectBuilder customerObject = Json.createObjectBuilder();
-                customerObject.add("id", id);
-                customerObject.add("name", name);
-                customerObject.add("address", address);
-                allCustomers.add(customerObject.build());
-            }
-
-            resp.getWriter().print(ResponseUtil.genJson("Success", "Loaded", allCustomers.build()));
-
-        } catch (SQLException e) {
-            resp.getWriter().print(ResponseUtil.genJson("Error", e.getMessage()));
-            resp.setStatus(400);
-        }*/
     }
 
     @SneakyThrows
