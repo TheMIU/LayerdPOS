@@ -7,10 +7,26 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a3fb02f5-190f-4006-909a-1efd39623bcb" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/BackEnd/src/lk/ijse/jsp/entity/OrderDetails.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BackEnd/src/lk/ijse/jsp/dao/CrudDAO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BackEnd/src/lk/ijse/jsp/dao/DAOFactory.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BackEnd/src/lk/ijse/jsp/dao/SQLUtil.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BackEnd/src/lk/ijse/jsp/dao/SuperDAO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BackEnd/src/lk/ijse/jsp/dao/custom/CustomerDAO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BackEnd/src/lk/ijse/jsp/dao/custom/ItemDAO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BackEnd/src/lk/ijse/jsp/dao/custom/OrderDetailsDAO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BackEnd/src/lk/ijse/jsp/dao/custom/OrdersDAO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BackEnd/src/lk/ijse/jsp/dao/custom/QueryDAO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BackEnd/src/lk/ijse/jsp/dao/custom/impl/CustomerDAOImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BackEnd/src/lk/ijse/jsp/dao/custom/impl/ItemDAOImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BackEnd/src/lk/ijse/jsp/dao/custom/impl/OrderDetailsDAOImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BackEnd/src/lk/ijse/jsp/dao/custom/impl/OrdersDAOImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BackEnd/src/lk/ijse/jsp/dao/custom/impl/QueryDAOImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BackEnd/src/lk/ijse/jsp/dto/CustomDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BackEnd/src/lk/ijse/jsp/entity/CustomEntity.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/BackEnd/src/lk/ijse/jsp/servlet/ConnectionAPI.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BackEnd/src/lk/ijse/jsp/entity/Orders.java" beforeDir="false" afterPath="$PROJECT_DIR$/BackEnd/src/lk/ijse/jsp/entity/Orders.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BackEnd/src/lk/ijse/jsp/dto/CustomerDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/BackEnd/src/lk/ijse/jsp/dto/CustomerDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/BackEnd/src/lk/ijse/jsp/dto/ItemDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/BackEnd/src/lk/ijse/jsp/dto/ItemDTO.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -35,6 +51,9 @@
     <option name="CUSTOM_FILTER" />
   </component>
   <component name="ProjectId" id="2VABKzVCRNm1myYM3NZRXYBHgPf" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -56,6 +75,8 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="lk.ijse.jsp.dto" />
+      <recent name="lk.ijse.jsp.dao.custom.impl" />
       <recent name="lk.ijse.jsp.Listners" />
       <recent name="lk.ijse.jsp.filter" />
       <recent name="lk.ijse.jsp.servlet.util" />
@@ -169,7 +190,7 @@
       <workItem from="1694420356186" duration="800000" />
       <workItem from="1694583244195" duration="70000" />
       <workItem from="1694758919598" duration="6000" />
-      <workItem from="1694828266657" duration="435000" />
+      <workItem from="1694828266657" duration="5747000" />
     </task>
     <servers />
   </component>
