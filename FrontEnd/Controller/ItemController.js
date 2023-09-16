@@ -14,6 +14,9 @@ function getAllItems() {
         url: baseUrl + 'item',
         dataType: "json",
         method: "GET",
+        headers: {
+            Auth: 'user=admin,pass=1234'
+        },
         success: function (response) {
             let items = response.data;
 
@@ -67,6 +70,9 @@ $("#btnItem").click(function () {
         url: baseUrl + "item",
         method: "POST",
         data: formData,
+        headers: {
+            Auth: 'user=admin,pass=1234'
+        },
         success: function (res) {
             alert(res.message);
             getAllItems();
@@ -121,6 +127,9 @@ $("#btnItemUpdate").click(function () {
             method: "PUT",
             contentType: "application/json",
             data: JSON.stringify(item),
+            headers: {
+                Auth: 'user=admin,pass=1234'
+            },
 
             success: function (res) {
                 alert(res.message);

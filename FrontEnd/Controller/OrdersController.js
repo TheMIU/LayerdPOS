@@ -9,6 +9,9 @@ function getAllOrders() {
         url: baseUrl + 'orders',
         dataType: 'json',
         method: 'GET',
+        headers: {
+            Auth: 'user=admin,pass=1234'
+        },
         success: function (response) {
             let orders = response.data;
 
