@@ -1,12 +1,17 @@
 package lk.ijse.jsp.bo.custom.impl;
 
 import lk.ijse.jsp.bo.custom.CustomerBO;
+import lk.ijse.jsp.dao.DAOFactory;
+import lk.ijse.jsp.dao.custom.CustomerDAO;
 import lk.ijse.jsp.dto.CustomerDTO;
+import lk.ijse.jsp.entity.Customer;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class CustomerBOImpl implements CustomerBO {
+    CustomerDAO customerDAO = (CustomerDAO) DAOFactory.getDaoFactory().getDAO(DAOFactory.DAOTypes.CUSTOMER);
+
     @Override
     public ArrayList<CustomerDTO> getAllCustomers() throws SQLException, ClassNotFoundException {
         return null;
@@ -14,7 +19,8 @@ public class CustomerBOImpl implements CustomerBO {
 
     @Override
     public boolean saveCustomer(CustomerDTO dto) throws SQLException, ClassNotFoundException {
-        return false;
+        Customer customer = new Customer(dto.getId(), dto.getName(), dto.getAddress());
+        return customerDAO.save(customer);
     }
 
     @Override

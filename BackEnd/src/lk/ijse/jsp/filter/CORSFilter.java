@@ -13,14 +13,14 @@ import java.io.IOException;
 public class CORSFilter implements Filter {
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-        System.out.println("CORS Filter Init");
+       // System.out.println("CORS Filter Init");
     }
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletResponse res = (HttpServletResponse) servletResponse;
         HttpServletRequest req = (HttpServletRequest) servletRequest;
-        System.out.println("CORS Filter Do Filter Invoked");
+        // System.out.println("CORS Filter Do Filter Invoked");
 
         String method = req.getMethod();
 
@@ -33,7 +33,7 @@ public class CORSFilter implements Filter {
             res.addHeader("Access-Control-Allow-Headers", "content-type, auth");
         } else {
             String auth = req.getHeader("Auth");
-            System.out.println(auth);
+           // System.out.println(auth);
             res.addHeader("Content-Type", "application/json");
 
             if (auth != null && auth.equals("user=admin,pass=1234")) {

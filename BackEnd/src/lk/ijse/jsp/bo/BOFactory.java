@@ -10,7 +10,7 @@ public class BOFactory {
     private BOFactory() {
     }
 
-    public static BOFactory getBoFactory() {
+    public static BOFactory getBOFactory() {
         if (boFactory == null) {
             boFactory = new BOFactory();
         }

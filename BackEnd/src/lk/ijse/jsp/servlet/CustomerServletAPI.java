@@ -1,6 +1,10 @@
 package lk.ijse.jsp.servlet;
 
+import lk.ijse.jsp.bo.BOFactory;
+import lk.ijse.jsp.bo.custom.CustomerBO;
+import lk.ijse.jsp.dto.CustomerDTO;
 import lk.ijse.jsp.servlet.util.ResponseUtil;
+import lombok.SneakyThrows;
 import org.apache.commons.dbcp2.BasicDataSource;
 
 import javax.json.*;
@@ -13,6 +17,9 @@ import java.sql.*;
 
 @WebServlet(urlPatterns = {"/pages/customer"})
 public class CustomerServletAPI extends HttpServlet {
+
+    CustomerBO customerBO = (CustomerBO) BOFactory.getBOFactory().getBO(BOFactory.BOTypes.CUSTOMER);
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         try (Connection connection = ((BasicDataSource) getServletContext().getAttribute("dbcp")).getConnection();) {
@@ -40,13 +47,25 @@ public class CustomerServletAPI extends HttpServlet {
         }
     }
 
+    @SneakyThrows
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String cusID = req.getParameter("cusID");
         String cusName = req.getParameter("cusName");
         String cusAddress = req.getParameter("cusAddress");
 
-        try (Connection connection = ((BasicDataSource) getServletContext().getAttribute("dbcp")).getConnection();) {
+        boolean isSaved = customerBO.saveCustomer(new CustomerDTO(cusID, cusName, cusAddress));
+
+
+        if(isSaved){
+            resp.getWriter().print(ResponseUtil.genJson("Success", cusID + " Successfully Added."));
+            resp.setStatus(200);
+        } else {
+            resp.getWriter().print(ResponseUtil.genJson("Error", "Wrong data !"));
+            resp.setStatus(400);
+        }
+
+        /*try (Connection connection = ((BasicDataSource) getServletContext().getAttribute("dbcp")).getConnection();) {
             PreparedStatement pstm = connection.prepareStatement("insert into customer values(?,?,?)");
 
             pstm.setObject(1, cusID);
@@ -64,7 +83,7 @@ public class CustomerServletAPI extends HttpServlet {
         } catch (SQLException e) {
             resp.getWriter().print(ResponseUtil.genJson("Error", e.getMessage()));
             resp.setStatus(400);
-        }
+        }*/
     }
 
     @Override

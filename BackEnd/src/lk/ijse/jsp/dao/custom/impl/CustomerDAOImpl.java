@@ -2,7 +2,10 @@ package lk.ijse.jsp.dao.custom.impl;
 
 import lk.ijse.jsp.dao.custom.CustomerDAO;
 import lk.ijse.jsp.entity.Customer;
+import lk.ijse.jsp.listener.MyListener;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -13,8 +16,24 @@ public class CustomerDAOImpl implements CustomerDAO {
     }
 
     @Override
-    public boolean save(Customer dto) throws SQLException, ClassNotFoundException {
-        return false;
+    public boolean save(Customer dto) {
+        try (Connection connection = MyListener.pool.getConnection();) {
+            PreparedStatement pstm = connection.prepareStatement("insert into customer values(?,?,?)");
+            pstm.setObject(1, dto.getId());
+            pstm.setObject(2, dto.getName());
+            pstm.setObject(3, dto.getAddress());
+
+            if (pstm.executeUpdate() > 0) {
+                System.out.println("Saved");
+                return true;
+            } else {
+                System.out.println("failed");
+                return false;
+            }
+        } catch (SQLException e) {
+            System.out.println("Connection failed");
+            return false;
+        }
     }
 
     @Override
