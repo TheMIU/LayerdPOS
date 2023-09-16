@@ -93,6 +93,9 @@ $("#btnItemDelete").click(function () {
         $.ajax({
             url: baseUrl + "item?code=" + code,
             method: "DELETE",
+            headers: {
+                Auth: 'user=admin,pass=1234'
+            },
 
             success: function (res) {
                 alert(res.message);

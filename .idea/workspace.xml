@@ -10,8 +10,9 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/BackEnd/src/lk/ijse/jsp/bo/custom/impl/ItemBOImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/BackEnd/src/lk/ijse/jsp/bo/custom/impl/ItemBOImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/BackEnd/src/lk/ijse/jsp/dao/custom/impl/ItemDAOImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/BackEnd/src/lk/ijse/jsp/dao/custom/impl/ItemDAOImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/BackEnd/src/lk/ijse/jsp/servlet/CustomerServletAPI.java" beforeDir="false" afterPath="$PROJECT_DIR$/BackEnd/src/lk/ijse/jsp/servlet/CustomerServletAPI.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/BackEnd/src/lk/ijse/jsp/servlet/ItemServletAPI.java" beforeDir="false" afterPath="$PROJECT_DIR$/BackEnd/src/lk/ijse/jsp/servlet/ItemServletAPI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FrontEnd/Controller/ItemController.js" beforeDir="false" afterPath="$PROJECT_DIR$/FrontEnd/Controller/ItemController.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/artifacts/app/app.war" beforeDir="false" afterPath="$PROJECT_DIR$/artifacts/app/app.war" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -177,7 +178,7 @@
       <workItem from="1694758919598" duration="6000" />
       <workItem from="1694828266657" duration="15551000" />
       <workItem from="1694854127812" duration="3702000" />
-      <workItem from="1694863330593" duration="1574000" />
+      <workItem from="1694863330593" duration="4044000" />
     </task>
     <servers />
   </component>

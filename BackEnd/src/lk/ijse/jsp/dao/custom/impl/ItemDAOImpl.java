@@ -37,13 +37,67 @@ public class ItemDAOImpl implements ItemDAO {
     }
 
     @Override
-    public boolean save(Item dto) throws SQLException, ClassNotFoundException {
-        return false;
+    public boolean save(Item dto) {
+        try (Connection connection = MyListener.pool.getConnection();) {
+            PreparedStatement pstm = connection.prepareStatement("insert into Item values(?,?,?,?)");
+            pstm.setObject(1, dto.getCode());
+            pstm.setObject(2, dto.getItemName());
+            pstm.setObject(3, dto.getQty());
+            pstm.setObject(4, dto.getUnitPrice());
+
+            if (pstm.executeUpdate() > 0) {
+                System.out.println("Saved");
+                return true;
+            } else {
+                System.out.println("failed");
+                return false;
+            }
+        } catch (SQLException e) {
+            System.out.println("Connection failed");
+            return false;
+        }
     }
 
     @Override
-    public boolean update(Item dto) throws SQLException, ClassNotFoundException {
-        return false;
+    public boolean update(Item dto) {
+        try (Connection connection = MyListener.pool.getConnection();) {
+            PreparedStatement pstm = connection.prepareStatement("update Item set itemName=?,qty=?,unitPrice=? where code=?");
+            pstm.setObject(1, dto.getItemName());
+            pstm.setObject(2, dto.getQty());
+            pstm.setObject(3, dto.getUnitPrice());
+            pstm.setObject(4, dto.getCode());
+
+            if (pstm.executeUpdate() > 0) {
+                System.out.println("Updated");
+                return true;
+            } else {
+                System.out.println("failed");
+                return false;
+            }
+        } catch (SQLException e) {
+            System.out.println("Connection failed");
+            return false;
+        }
+    }
+
+    @Override
+    public boolean delete(String code) {
+        try (Connection connection = MyListener.pool.getConnection();) {
+            PreparedStatement pstm = connection.prepareStatement("delete from Item where code=?");
+            pstm.setObject(1, code);
+
+            if (pstm.executeUpdate() > 0) {
+                System.out.println("Deleted");
+                return true;
+            } else {
+                System.out.println("failed");
+                return false;
+            }
+        } catch (SQLException e) {
+            System.out.println("Connection failed");
+            return false;
+        }
+
     }
 
     @Override
@@ -53,11 +107,6 @@ public class ItemDAOImpl implements ItemDAO {
 
     @Override
     public boolean exist(String s) throws SQLException, ClassNotFoundException {
-        return false;
-    }
-
-    @Override
-    public boolean delete(String s) throws SQLException, ClassNotFoundException {
         return false;
     }
 
