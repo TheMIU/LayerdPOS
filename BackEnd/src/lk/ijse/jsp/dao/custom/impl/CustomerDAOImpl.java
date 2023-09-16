@@ -6,12 +6,31 @@ import lk.ijse.jsp.listener.MyListener;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class CustomerDAOImpl implements CustomerDAO {
     @Override
     public ArrayList<Customer> getAll() {
+        try (Connection connection = MyListener.pool.getConnection();) {
+            PreparedStatement pstm = connection.prepareStatement("select * from customer");
+            ResultSet rst = pstm.executeQuery();
+
+            ArrayList<Customer> customers = new ArrayList<>();
+            while (rst.next()) {
+                String id = rst.getString(1);
+                String name = rst.getString(2);
+                String address = rst.getString(3);
+
+                Customer customer = new Customer(id, name, address);
+                customers.add(customer);
+            }
+            return customers;
+
+        } catch (SQLException e) {
+            System.out.println("Connection failed");
+        }
         return null;
     }
 

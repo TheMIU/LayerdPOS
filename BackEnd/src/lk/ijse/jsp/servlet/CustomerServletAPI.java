@@ -14,14 +14,33 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.*;
+import java.util.ArrayList;
 
 @WebServlet(urlPatterns = {"/pages/customer"})
 public class CustomerServletAPI extends HttpServlet {
-
     CustomerBO customerBO = (CustomerBO) BOFactory.getBOFactory().getBO(BOFactory.BOTypes.CUSTOMER);
 
+    @SneakyThrows
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        ArrayList<CustomerDTO> customerArray = customerBO.getAllCustomers();
+
+        JsonArrayBuilder allCustomers = Json.createArrayBuilder();
+
+        for (CustomerDTO c : customerArray) {
+            String id = c.getId();
+            String name = c.getName();
+            String address = c.getAddress();
+
+            JsonObjectBuilder customerObject = Json.createObjectBuilder();
+            customerObject.add("id", id);
+            customerObject.add("name", name);
+            customerObject.add("address", address);
+            allCustomers.add(customerObject.build());
+        }
+
+        resp.getWriter().print(ResponseUtil.genJson("Success", "Loaded", allCustomers.build()));
+/*
         try (Connection connection = ((BasicDataSource) getServletContext().getAttribute("dbcp")).getConnection();) {
             PreparedStatement pstm = connection.prepareStatement("select * from customer");
             ResultSet rst = pstm.executeQuery();
@@ -44,7 +63,7 @@ public class CustomerServletAPI extends HttpServlet {
         } catch (SQLException e) {
             resp.getWriter().print(ResponseUtil.genJson("Error", e.getMessage()));
             resp.setStatus(400);
-        }
+        }*/
     }
 
     @SneakyThrows
@@ -100,24 +119,6 @@ public class CustomerServletAPI extends HttpServlet {
             resp.getWriter().print(ResponseUtil.genJson("Failed", "Customer with ID " + cusID + " not found."));
             resp.setStatus(400);
         }
-
-        /*
-        try (Connection connection = ((BasicDataSource) getServletContext().getAttribute("dbcp")).getConnection();) {
-            PreparedStatement pstm = connection.prepareStatement("delete from customer where cusID=?");
-            pstm.setObject(1, cusID);
-
-            if (pstm.executeUpdate() > 0) {
-                resp.getWriter().print(ResponseUtil.genJson("Success", cusID + " Customer Deleted..!"));
-                resp.setStatus(200);
-            } else {
-                resp.getWriter().print(ResponseUtil.genJson("Failed", "Customer with ID " + cusID + " not found."));
-                resp.setStatus(400);
-            }
-
-        } catch (SQLException e) {
-            resp.getWriter().print(ResponseUtil.genJson("Error", e.getMessage()));
-            resp.setStatus(400);
-        }*/
     }
 }
 
