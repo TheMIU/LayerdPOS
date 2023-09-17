@@ -78,6 +78,11 @@ public class CustomerDAOImpl implements CustomerDAO {
     }
 
     @Override
+    public boolean update2(Customer dto) throws SQLException, ClassNotFoundException {
+        return false;
+    }
+
+    @Override
     public boolean delete(String cusID) {
         try (Connection connection = MyListener.pool.getConnection();) {
             PreparedStatement pstm = connection.prepareStatement("delete from customer where cusID=?");

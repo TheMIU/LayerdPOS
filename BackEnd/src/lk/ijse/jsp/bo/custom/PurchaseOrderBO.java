@@ -4,12 +4,13 @@ import lk.ijse.jsp.bo.SuperBO;
 import lk.ijse.jsp.dto.CustomerDTO;
 import lk.ijse.jsp.dto.ItemDTO;
 import lk.ijse.jsp.dto.OrdersDTO;
+import lk.ijse.jsp.dto.PlaceOrderDTO;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 
 public interface PurchaseOrderBO extends SuperBO {
-    boolean purchaseOrder(OrdersDTO dto) throws SQLException, ClassNotFoundException;
+    boolean purchaseOrder(PlaceOrderDTO dto) throws SQLException, ClassNotFoundException;
 
     CustomerDTO searchCustomer(String id) throws SQLException, ClassNotFoundException;
 

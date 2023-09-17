@@ -80,6 +80,24 @@ public class ItemDAOImpl implements ItemDAO {
         }
     }
 
+    public boolean update2(Item dto) {
+        try (Connection connection = MyListener.pool.getConnection();) {
+            PreparedStatement pstm = connection.prepareStatement("UPDATE item SET qty = qty - ? WHERE code = ?");
+            pstm.setObject(1, dto.getQty());
+            pstm.setObject(2, dto.getCode());
+
+            if (pstm.executeUpdate() > 0) {
+                System.out.println("item Updated");
+                return true;
+            } else {
+                System.out.println("item update failed");
+                return false;
+            }
+        } catch (SQLException e) {
+            System.out.println("Connection failed");
+            return false;
+        }
+    }
     @Override
     public boolean delete(String code) {
         try (Connection connection = MyListener.pool.getConnection();) {

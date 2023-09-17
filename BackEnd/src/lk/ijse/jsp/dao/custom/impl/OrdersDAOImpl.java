@@ -56,12 +56,33 @@ public class OrdersDAOImpl implements OrdersDAO {
     }
 
     @Override
-    public boolean save(CustomEntity dto) throws SQLException, ClassNotFoundException {
-        return false;
+    public boolean save(CustomEntity dto) {
+        try (Connection connection = MyListener.pool.getConnection();) {
+            PreparedStatement pstm = connection.prepareStatement("INSERT INTO orders (orderID, date, customerID, discount, total) VALUES (?, ?, ?, ?, ?)");
+            pstm.setString(1, dto.getOrderID());
+            pstm.setString(2, dto.getDate());
+            pstm.setString(3, dto.getCusID());
+            pstm.setInt(4, dto.getDiscount());
+            pstm.setDouble(5, dto.getTotal());
+
+            if (pstm.executeUpdate() <= 0) {
+                return false;
+            } else {
+                return true;
+            }
+        } catch (Exception e) {
+            System.out.println("Connection failed");
+            return false;
+        }
     }
 
     @Override
     public boolean update(CustomEntity dto) throws SQLException, ClassNotFoundException {
+        return false;
+    }
+
+    @Override
+    public boolean update2(CustomEntity dto) throws SQLException, ClassNotFoundException {
         return false;
     }
 
