@@ -17,12 +17,12 @@ public class MyListener implements ServletContextListener {
     public void contextInitialized(ServletContextEvent servletContextEvent) {
         // create pool
         pool = new BasicDataSource();
-        pool.setDriverClassName("com.mysql.jdbc.Driver");
+        pool.setDriverClassName("com.mysql.cj.jdbc.Driver");
         pool.setUrl("jdbc:mysql://localhost:3306/testdb");
         pool.setUsername("root");
         pool.setPassword("1234");
-        pool.setInitialSize(3);
-        pool.setMaxTotal(3);
+        pool.setInitialSize(5);
+        pool.setMaxTotal(5);
 
         // bind pool to servlet context
         ServletContext servletContext = servletContextEvent.getServletContext();

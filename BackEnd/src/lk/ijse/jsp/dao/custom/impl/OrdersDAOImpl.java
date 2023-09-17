@@ -57,6 +57,8 @@ public class OrdersDAOImpl implements OrdersDAO {
 
     @Override
     public boolean save(CustomEntity dto) {
+        System.out.println(dto);
+
         try (Connection connection = MyListener.pool.getConnection();) {
             PreparedStatement pstm = connection.prepareStatement("INSERT INTO orders (orderID, date, customerID, discount, total) VALUES (?, ?, ?, ?, ?)");
             pstm.setString(1, dto.getOrderID());
@@ -71,7 +73,7 @@ public class OrdersDAOImpl implements OrdersDAO {
                 return true;
             }
         } catch (Exception e) {
-            System.out.println("Connection failed");
+            System.out.println("Connection failed"+e);
             return false;
         }
     }

@@ -17,6 +17,8 @@ public class OrderDetailsDAOImpl implements OrderDetailsDAO {
 
     @Override
     public boolean save(OrderDetails dto) {
+        System.out.println(dto);
+
         try (Connection connection = MyListener.pool.getConnection();) {
             PreparedStatement pstm = connection.prepareStatement("INSERT INTO order_items (orderID, itemID, qty) VALUES (?, ?, ?)");
             pstm.setString(1, dto.getOrderID());
@@ -29,7 +31,7 @@ public class OrderDetailsDAOImpl implements OrderDetailsDAO {
                 return true;
             }
         } catch (Exception e) {
-            System.out.println("Connection failed");
+            System.out.println("Connection failed"+e);
             return false;
         }
     }

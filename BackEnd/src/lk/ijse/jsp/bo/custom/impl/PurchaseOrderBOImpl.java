@@ -25,53 +25,57 @@ public class PurchaseOrderBOImpl implements PurchaseOrderBO {
 
     @Override
     public boolean purchaseOrder(PlaceOrderDTO dto) {
+        System.out.println(dto);
+
         // Transaction
         try (Connection connection = MyListener.pool.getConnection();) {
             connection.setAutoCommit(false);
 
-            CustomEntity orderDetail = new CustomEntity();
-            orderDetail.setOrderID(dto.getOrderID());
-            orderDetail.setDate(dto.getDate());
-            orderDetail.setCusID(dto.getCusID());
-            orderDetail.setDiscount(dto.getDiscount());
-            orderDetail.setTotal(dto.getTotal());
+            CustomEntity customEntity = new CustomEntity();
+            customEntity.setOrderID(dto.getOrderID());
+            customEntity.setDate(dto.getDate());
+            customEntity.setCusID(dto.getCusID());
+            customEntity.setDiscount(dto.getDiscount());
+            customEntity.setTotal(dto.getTotal());
 
             // Save order
-            boolean isOrderSaved = ordersDAO.save(orderDetail);
+            boolean isOrderSaved = ordersDAO.save(customEntity);
+            System.out.println(isOrderSaved);
 
-            if (isOrderSaved) {
+            if (!isOrderSaved) {
+                ArrayList<CartDTO> cartArray = dto.getCartArray();
+                for (CartDTO c : cartArray) {
+                    ItemDTO itemDTO = c.getItem();
+                    String cartItemCode = itemDTO.getCode();
+                    int cartQty = c.getQty();
+
+                    // save order details
+                    OrderDetails orderDetails = new OrderDetails(dto.getOrderID(), cartItemCode, cartQty);
+                    boolean isOrderDetailsSaved = orderDetailsDAO.save(orderDetails);
+                    System.out.println(isOrderDetailsSaved);
+
+                    if (!isOrderDetailsSaved) {
+                        // update item
+                        Item item = new Item();
+                        item.setQty(cartQty);
+                        item.setCode(cartItemCode);
+                        System.out.println(item);
+                        boolean isItemUpdated = itemDAO.update2(item);
+                        System.out.println(isItemUpdated);
+
+                        if (!isItemUpdated) {
+                            connection.commit();
+                            connection.setAutoCommit(true);
+                            return true;
+                        }
+                    }
+                }
+            } else {
                 connection.rollback();
+                connection.setAutoCommit(true);
                 return false;
             }
-
-            ArrayList<CartDTO> cartArray = dto.getCartArray();
-            for (CartDTO c : cartArray) {
-                ItemDTO itemDTO = c.getItem();
-                String cartItemCode = itemDTO.getCode();
-                int cartQty = c.getQty();
-
-                // save order details
-                OrderDetails orderDetails = new OrderDetails(dto.getOrderID(), cartItemCode, cartQty);
-                boolean isOrderDetailsSaved = orderDetailsDAO.save(orderDetails);
-                if (isOrderDetailsSaved) {
-                    connection.rollback();
-                    return false;
-                }
-
-                // update item
-                Item item = new Item();
-                item.setQty(cartQty);
-                item.setCode(cartItemCode);
-                boolean isItemUpdated = itemDAO.update2(item);
-                if (isItemUpdated) {
-                    connection.rollback();
-                    return false;
-                }
-            }
-
-            connection.commit();
-            connection.setAutoCommit(true);
-            return true;
+            return false;
 
         } catch (Exception e) {
             System.out.println("Connection failed" + e);

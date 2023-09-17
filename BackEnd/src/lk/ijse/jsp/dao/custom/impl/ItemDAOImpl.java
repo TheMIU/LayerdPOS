@@ -81,6 +81,8 @@ public class ItemDAOImpl implements ItemDAO {
     }
 
     public boolean update2(Item dto) {
+        System.out.println(dto);
+
         try (Connection connection = MyListener.pool.getConnection();) {
             PreparedStatement pstm = connection.prepareStatement("UPDATE item SET qty = qty - ? WHERE code = ?");
             pstm.setObject(1, dto.getQty());
